@@ -22,6 +22,20 @@ main(int argc, char **argv)
 	if (connect(sockfd, (SA *) &servaddr, sizeof(servaddr)) < 0)
 		err_sys("connect error");
 
+	/*******/
+	// Check the local addredd details
+	struct sockaddr_storage ss;
+	socklen_t len;
+
+	len = sizeof(ss);
+	if (getsockname(sockfd, (SA *) &ss, &len) < 0 )
+		return (-1);
+	printf("Local IP address: %s", sock_ntop((const SA *)&ss, len));
+	printf(", port: %d\n", sock_get_port((const SA *)&ss, len));
+
+	/**********/
+
+
 	while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
 		recvline[n] = 0;	/* null terminate */
 		if (fputs(recvline, stdout) == EOF)
