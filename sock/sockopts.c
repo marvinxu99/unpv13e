@@ -11,6 +11,9 @@
 #include	<fcntl.h>
 #include	<sys/ioctl.h>
 
+
+static void sigio_func(int);   
+
 void
 sockopts(int sockfd, int doall)
 {
@@ -328,7 +331,7 @@ sockopts(int sockfd, int doall)
 
     if (sigio) {
 #ifdef	FIOASYNC
-		static void sigio_func(int);
+		// static void sigio_func(int);    // Move it to the top
 
 		/*
 		 * Should be able to set this with fcntl(O_ASYNC) or fcntl(FASYNC),
